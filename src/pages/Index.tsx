@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useEffect, useState } from 'react';
 
 interface IndexProps {
   onAddToCart: (product: any) => void;
@@ -20,6 +21,14 @@ interface IndexProps {
 }
 
 const Index = ({ onAddToCart, onToggleFavorite, onToggleCompare, favorites, compare }: IndexProps) => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const promoSlides = [
     {
       id: 1,
@@ -138,6 +147,34 @@ const Index = ({ onAddToCart, onToggleFavorite, onToggleCompare, favorites, comp
 
   return (
     <div className="animate-fade-in">
+      <section className="relative h-[600px] mb-12 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://cdn.poehali.dev/projects/9aeb5eba-f3d4-475b-a809-dc312a85f5c4/files/b1156480-2857-457a-b2d0-89d617e41d09.jpg)',
+            transform: `translateY(${scrollY * 0.5}px)`,
+            willChange: 'transform'
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background" />
+        <div className="relative h-full flex items-center justify-center">
+          <div className="text-center space-y-6 animate-fade-in px-4">
+            <h1 className="text-6xl md:text-8xl font-bold text-white drop-shadow-2xl">
+              BeautyShop
+            </h1>
+            <p className="text-2xl md:text-3xl text-white/90 drop-shadow-lg">
+              Красота в каждой детали
+            </p>
+            <Link to="/catalog">
+              <Button size="lg" className="mt-8 text-lg px-8 py-6">
+                Открыть каталог
+                <Icon name="Sparkles" size={24} className="ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="mb-12">
         <Carousel className="w-full" opts={{ loop: true }}>
           <CarouselContent>
